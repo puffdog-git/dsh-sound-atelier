@@ -272,3 +272,11 @@ select.dts-input{cursor:pointer;color-scheme:inherit}
 .dts-quick-progress, .dts-quick-note, .dts-quick-error { border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px; justify-items: start; background: color-mix(in srgb, currentColor 6%, transparent); }
 .dts-quick-error { color: #c0453f; }
 .dts-quick-log { font-family: ui-monospace, monospace; font-size: 12px; opacity: 0.75; overflow-wrap: anywhere; }
+
+/* 區塊裡的使用步驟 */
+.dts-steps { margin: 6px 0 10px; padding-left: 1.4em; display: grid; gap: 4px; font-size: 13px; line-height: 1.6; }
+
+/* 長選項不把版面撐寬（手機寬度） */
+.dts-block select, .dts-block input[type="file"], .dts-block pre { max-width: 100%; box-sizing: border-box; }
+.dts-block label { max-width: 100%; }
+.dts-block .dts-btn { max-width: 100%; white-space: normal; }
