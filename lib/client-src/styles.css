@@ -286,3 +286,8 @@ select.dts-input{cursor:pointer;color-scheme:inherit}
 .dts-guide-code { display: block; margin: 6px 0; padding: 6px 8px; border-radius: 6px; overflow-wrap: anywhere; user-select: all; background: color-mix(in srgb, currentColor 8%, transparent); }
 .dts-guide-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
 .dts-guide .dts-link { display: inline-block; margin-left: 6px; }
+
+/* dots／IndexTTS 的一鍵準備 */
+.dts-native-prepare { border: 1px solid var(--dsw-alias-border-l2, #8887); border-radius: 12px; padding: 12px; margin: 8px 0; display: grid; gap: 8px; }
+.dts-native-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dts-native-row > span:first-child { flex: 0 0 7em; font-weight: 600; }
