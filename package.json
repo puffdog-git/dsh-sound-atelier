@@ -1,6 +1,6 @@
 {
   "name": "dsh-sound-atelier",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "DSH-sound-atelier（DSH 聲音工坊）：線上與本機語音合成、人格音色、中文／日文配音、RVC 與中立音訊交付。",
   "license": "MIT",
   "type": "module",

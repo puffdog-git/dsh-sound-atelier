@@ -1,3 +1,9 @@
+# 1.0.2 — 2026-11-15
+
+- Voice delivery for messaging plugins is now built in (previously the separate `dsh-speech-bridge` plugin, same maintainer): the `send_speech_reply` tool for OneBot, QQBot and dsh-im conversations, the "語音交付" settings page with channel capabilities and recent results, and the optional `external:dsh-voice` speech-to-text source. Nothing extra to install.
+- Two new settings, both on by default: `speechBridgeEnabled` and `speechBridgeExternalVoice`. The tool only appears in conversations that have a matching messaging tool.
+- If the old standalone bridge is still installed it keeps handling delivery and the built-in one stays out of its way.
+
 # 1.0.1 — 2026-11-15
 
 - Fix one-click update being unavailable: the updater now finds the DSH command-line entry in DSH Desktop and in `dsh web`, runs it the way the host was started, and reads the profile from where the plugin is installed instead of assuming `web`.

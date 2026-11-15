@@ -32,6 +32,7 @@ Based on [dsh-tts](https://github.com/GooDAnDReaDY/dsh-tts) 0.4.42 by GooDAnDRea
 - 🇯🇵 **Chinese/Japanese dubbing.** Chinese on screen, Japanese out loud. Great for role-play.
 - 🧬 **Voice cloning.** Build a voice from a recording; RVC voice conversion is supported too.
 - 🛟 **Switches when one breaks.** If the first speech service fails, the next in your list takes over.
+- 💬 **Voice messages in chat apps.** With the QQ (OneBot, QQBot) or dsh-im messaging plugins, ask for a spoken reply and the AI sends it as a voice message.
 
 ## 💞 Made for Discord-cyberfriend
 
@@ -90,6 +91,7 @@ Does the user have a source folder instead of a market install? Follow "Installi
 - **Cloud speech services cost money.** Reading, previews and creating voices may all be billed, to your own account. Edge is free.
 - **Local models are yours to set up.** None are bundled, large ones need an NVIDIA GPU, and the one-click setup is tested on Windows only.
 - **Not every service was tested with a paid account.** Try a short phrase when switching to a new one.
+- **Voice messages in chat apps are simulation-tested only.** Real delivery on QQ and other platforms has not been verified by a person.
 - **Get consent before cloning someone's voice.** Models have their own licences too, and some forbid commercial use.
 - **Do not install the upstream `@goodandready/dsh-tts` alongside this.** The two conflict.
 

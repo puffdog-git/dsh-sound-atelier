@@ -1,5 +1,7 @@
 # 外部通訊插件相容性檢查
 
+> **1.0.2 更新**：下文提到的獨立 `dsh-speech-bridge` 已併入聲音工坊，不必另外安裝。用法與開關見 [SPEECH-INTEGRATION.md](SPEECH-INTEGRATION.md) 的「通訊語音交付」。以下保留併入前的檢查紀錄。
+
 ## 後續實作已加入
 
 使用者後續要求原生語音泡泡並以模擬驗收：已新增本機 `dsh-im-voice` 5.10.0-voice.1 分支，透過語音意圖協商接入 10 個通道的原生語音路徑，詳見該分支 NATIVE-VOICE.md。Slack／Email／iMessage 維持音訊附件。原版 dsh-im 備份保留，TTS 本身未納入通訊協定。以下「dsh-im 只附件」敘述適用原版與不支援的新通道，不再代表本機語音分支的完整能力。
