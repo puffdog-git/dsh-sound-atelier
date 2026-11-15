@@ -1,3 +1,7 @@
+# 1.0.1 — 2026-11-15
+
+- Fix one-click update being unavailable: the updater now finds the DSH command-line entry in DSH Desktop and in `dsh web`, runs it the way the host was started, and reads the profile from where the plugin is installed instead of assuming `web`.
+
 # 1.0.0 — 2026-11-15
 
 - Prepare the renamed DSH-sound-atelier fork for source distribution; maintainer puffdog-git.
