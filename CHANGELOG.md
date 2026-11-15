@@ -1,0 +1,319 @@
+# 1.0.0 — 2026-11-15
+
+- Prepare the renamed DSH-sound-atelier fork for source distribution; maintainer puffdog-git.
+- Align manifest and lockfile, include browser build sources and tests, document local installation and private data boundaries.
+- Preserve upstream MIT attribution and legacy storage/service IDs.
+- One-click update now targets `dsh-sound-atelier` for market/npm installs; installs from a source folder stay manual.
+- FFmpeg is downloaded automatically on first start when the package manager skipped dependency install scripts (market/pnpm installs).
+- Documentation is now Chinese and English.
+
+---
+
+# Changelog
+
+## 0.4.42 (2026-11-08)
+
+### Added
+- **Visual Voice Packs (1-Click Presets)** (#224):
+  - Curated catalog of 5 distinct voice profiles: Narrator, Energetic Buddy, Calm Lecturer, Cyberpunk Terminal, and Quiet/Night Mode.
+  - Interactive Voice Packs carousel in settings card applying optimal provider, voice, speed rate, and chime in one click.
+- **Agent Event Chimes & Status Audio** (#225):
+  - Configurable lifecycle event chimes: `onTurnComplete`, `onApprovalRequired`, `onError`, `onSubagentStart`, and `onSubagentDone`.
+  - Settings UI table with per-event sound pickers and live status exposure via `/dsh-tts/status`.
+- **Role-based Voices & SSML Emotions** (#226):
+  - Advanced subagent role detection (`detectRolePreset`) mapping personas (reviewer, researcher, brainstormer) to dedicated voice profiles.
+  - SSML emotion markup (`wrapSsmlEmotion`) supporting `cheerful`, `empathetic`, `serious`, `whispering`, and `chat` express-as styles in Edge and Azure TTS.
+
+## 0.4.41 (2026-11-08)
+
+### Added
+- **Alibaba CosyVoice Local Provider** (#222):
+  - Integrated local CosyVoice / CosyVoice-2 engine (`cosyvoice`) in `lib/providers/local.js`.
+  - Added configuration parameter `cosyvoiceUrl` (default `http://127.0.0.1:9233`) with automatic fallback to `/tts`.
+  - Default model `CosyVoice2-0.5B` and speaker `alex`.
+- **Drop-in Voice Cloning via Audio Sample** (#227):
+  - Added `POST /dsh-tts/voice/clone` supporting Instant Voice Cloning and local reference audio persistence in `lib/routes.js`.
+  - Validates audio samples, file integrity, and isolates storage securely in profile voice directory.
+
+## 0.4.40 (2026-11-08)
+
+### Added
+- **Doubao Seed-TTS Provider (ByteDance / Volcengine)** (#221):
+  - Integrated Volcengine Seed-TTS 1.0 engine (`doubao`) in `lib/providers/cloud.js`.
+  - Added configuration parameters: `doubaoAppId`, `doubaoCluster`, `doubaoBaseUrl`, `doubaoKeyEnv`.
+  - Built-in credential resolution with safe storage via `/dsh-tts/credential`.
+  - Default model `seed-tts-1.0` with `BV001_streaming` voice.
+- **DeepSeek Web Audio Bridge** (#223):
+  - Integrated official web session voice bridge (`deepseek-web`) in `lib/providers/cloud.js`.
+  - Added configuration parameters: `deepseekWebKeyEnv`, `deepseekWebBaseUrl`.
+  - Supports direct bearer session token and automatic fallback to Edge TTS upon network or session expiration.
+
+## 0.4.39 (2026-11-08)
+
+### Added
+- **Visual Sentence Karaoke Highlight & Mobile Wake-Lock** (#219):
+  - Added `splitSentencesWithOffsets` in `lib/text.js` tracking character start/end bounds and sentence index across turns.
+  - Added live sentence karaoke highlight (`dts-karaoke-active`) in chat player with subtle theme styling (`var(--dsw-alias-bg-hover)`).
+  - Integrated Screen Wake-Lock API (`navigator.wakeLock`) during speech playback to keep mobile and tablet screens active without premature audio cutoff.
+- **Smart Typing Ducking & Barge-in** (#220):
+  - Added `duckOnTyping` configuration (`duck` [default], `pause`, `stop`, `off`) and settings dropdown.
+  - When user begins typing a reply, synthesized speech volume is automatically ducked to 20% (or paused/stopped according to preference) and smoothly restored upon inactivity.
+
+## 0.4.38 (2026-11-08)
+
+### Added
+- **Intelligent Text Preprocessing & Content Filtering** (#217):
+  - Preprocessing pipeline strips terminal ANSI color codes, condenses raw git diff markers, and cleans stack trace lines before synthesis.
+  - Added configurable `cleanUrls` (default `true`) replacing verbose links with concise domain names.
+  - Added configurable `skipTables` (default `true`) collapsing markdown tables into spoken notices (`table, N rows`) instead of reciting raw delimiter and cell strings.
+  - Added configurable `keepInlineCode` (default `false`) enabling inline code backticks to be spoken when needed.
+- **TL;DR Speech Mode & Smart Speed** (#218):
+  - Added `extractTldr` supporting explicit markdown/bold summary headings (`### Summary`, `### Conclusion`, `### Резюме`, `### Итог`) and condensed paragraph extraction.
+  - Added volatile setting `tldrDefault` and per-turn context menu option `Speak TL;DR summary` in chat player UI.
+  - Added `computeAdaptiveRate` (Smart Speed) automatically scaling playback speed up to 1.25x for lengthy answers while keeping natural pace for short phrases.
+
+## 0.4.37 (2026-10-29)
+
+### Fixed
+- **LAN Bridge Access Control Hardening** (#214):
+  - Prevented remote clients from LAN or Tailscale behind `dsh-lanmode` proxy bridge from bypassing administrative route authorization.
+  - Bridge-injected loopback authority cookies (`dsh-auth-...`) are identified and rejected for remote forwarded callers (`X-Forwarded-For`), requiring genuine client session credentials (`dsh_token=`, `dsh_lan_pin=`, `dsh_auth_session=`, non-loopback `dsh-auth-...`, or Bearer token).
+  - Enforced strict `Origin` or `Referer` validation matching `Host` on sensitive state-mutating endpoints (`PUT/DELETE /dsh-tts/credential`, `PUT /dsh-tts/config`, `/dsh-tts/models/install`, `/dsh-tts/models/delete`, `/dsh-tts/cache/clear`) to block forged ambient requests.
+  - Integrated `isLanAddress` helper into IP classification logic.
+- **Client Theme Consistency & Code Quality** (#215):
+  - Replaced remaining 24 hardcoded color literals and fallbacks in `lib/client-src/10-styles.js` and `lib/client-src/40-editors.js` with semantic CSS variables (`var(--dsw-alias-...)`) and `color-mix`. Preflight hardcoded color check is clean (0 literals).
+  - Guarded git-specific test assertion in `test/block6-sanitization-hygiene.test.mjs` against environments without `.git` (e.g. `git archive` exports).
+  - Condensed whitespace and blank lines in `lib/client-src/20-player.js` to strictly keep module length below 600 lines (591 lines).
+
+## 0.4.36 (2026-10-23)
+
+### Fixed
+- **Edge TTS Transient Error Retry** (#212, GitHub #4):
+  - Retries transient `edge_tts.exceptions.NoAudioReceived` errors and empty audio payloads (`< 32` bytes) up to 3 times before failing or tripping circuit breaker.
+  - Automatically cleans up corrupt/empty audio artifacts between retry attempts.
+  - Honors `req.signal` (AbortSignal) cancellation during backoff delays without hanging.
+  - Fails fast on `ENOENT` / missing binary without wasting retry cycles.
+
+## 0.4.35 (2026-10-20)
+
+### Fixed
+- **Authentication Guard for Administrative and Credential Routes** (#210):
+  - Enforced DSH core connection authentication (`connection.requestRejection(req)`) across all `/dsh-tts/*` HTTP endpoints.
+  - Fail-closed: Remote LAN clients without an authenticated operator session or token are rejected with 401/403 and cannot manage credentials or mutate plugin configuration (`PUT/DELETE /dsh-tts/credential`, `PUT /dsh-tts/config`, `/dsh-tts/models/install`, `/dsh-tts/models/delete`, `/dsh-tts/cache/clear`).
+  - Permitted authenticated operators via DSH connection service to manage provider credentials and configuration from LAN or remote interfaces.
+  - Added helpers `getClientIp(req)`, `isLanAddress(address)`, and `getRejectionStatus(req, options)` with comprehensive unit test coverage.
+
+## 0.4.34 (2026-10-17)
+
+- **Per-Reply Speak Action** (#208, GitHub PR #2):
+  - Added dedicated speaker button to `conversation.chat.assistant-actions` (order 5), positioned beside copy action to read rendered assistant turn text directly from the DOM.
+  - Added in-row transport cluster next to the reply clock (pause, stop, skip, export) that remains visible during playback even when mouse leaves message row.
+- **Context Menu & Contained Scroll** (#208, GitHub PR #2):
+  - Added right-click context menu on the speaker action to display recent utterances with contained wheel scrolling that prevents closing on scroll.
+- **Hotkeys & Playback Enhancements** (#208, GitHub PR #2):
+  - Added `Shift+Space` hotkey to stop active playback or instantly replay the last utterance from memory cache (`player.lastItem`).
+  - Added `statusKnown` guard in SSE event handling to prevent dropping initial stream utterances during server startup.
+  - Primed pending audio poll immediately on mount and on audio unlock gesture.
+- **Client Bundle**: Rebuilt `lib/client.js` from canonical `lib/client-src/` fragments with updated tests.
+
+## 0.4.33 (2026-10-11)
+
+- **SSE Stream Watchdog**: Added idle timeout watchdog (30s) in Web player (`lib/client-src/20-player.js`) to automatically trigger reconnect on stale/frozen EventSource connection (#206).
+- **Engine Manager Cleanup**: Added explicit `removeEventListener('abort', ...)` in `execute` finally block for model downloads in `lib/engines/manager.js` (#206).
+- **Updater Testing**: Added behavioral test capturing `child_process.spawn` arguments during `/api/dsh-tts/update` execution verifying no bypass of minimum release age (#206).
+- **Client Bundle**: Rebuilt `lib/client.js` from canonical client-src fragments with idle watchdog.
+
+## 0.4.32
+
+### Fixed
+- **Transactional Rollback on Credential Failure** (#151):
+  - Added transactional rollback to previous config in `/dsh-tts/config` PUT handler if credential persistence throws an error after settings replacement, ensuring consistent state on aborted saves.
+- **Messenger Gateway / Speak Guard Strictness** (#165):
+  - Enforced 403 rejection for unclassified / external gateway requests lacking channel metadata when `messengerTtsEnabled` is disabled, while preserving internal web UI and voice duplex traffic.
+- **Strict Multi-Format Model Integrity Validation** (#179):
+  - Enhanced `validateFileIntegrity` to reject uniform repeating byte sequences of any value, strictly validate JSON parsing for voice mappings, enforce ONNX protobuf header magic (`0x08`), and validate safetensors header length bounds.
+- **Non-Tautological Test Suite Enforcement** (#181):
+  - Replaced tautological and assertion-free test fixtures in deduplication, client prebuffering, and SSE player suites with strict assertions verifying exact execution counts (`synthCalls === 1`), factory invocation, and queue limits.
+- **Immediate Pre-Write SSE Chunk Cap** (#186):
+  - Added immediate buffer cap rejection before `res.write` in `safeWrite`, preventing oversized payloads (>512 KB) from entering the socket buffer even on the initial chunk.
+- **Cache L2 Clear Concurrency Guard** (#202):
+  - Captured generation token at the immediate start of `get()`, preventing post-clear metadata recreation when disk reads are interleaved with cache clearing.
+
+## 0.4.31
+
+### Fixed
+- **Settings & Revision Safety** (#151):
+  - Stripped `revision` from config payload before calling `settingsApi.replace(parsed, revision)`, eliminating `Config field "revision" is not volatile` validation errors in core SettingsForms.
+  - Reordered save sequence so provider API keys are only persisted to credential store after settings replacement succeeds, preventing mutation on 409 revision conflict.
+- **Messenger & Duplex Route Guards** (#165):
+  - Added `vadBargeIn` property to `/dsh-tts/status` and connected client player to check `vadBargeIn` during active speech.
+  - Enforced 403 rejection on external messenger `/dsh-tts/speak` requests when `messengerTtsEnabled` is disabled.
+- **Model Integrity & Immutable Sources** (#179):
+  - Updated Kokoro-82M ONNX model weights and voices URLs to official release assets from `thewh1teagle/kokoro-onnx` v0.19.
+  - Pinned F5-TTS model weights URL to immutable upstream commit hash `84e5a410d9cead4de2f847e7c9369a6440bdfaca`.
+  - Upgraded `validateFileIntegrity` to reject HTML error pages, repetitive dummy byte sequences, and malformed JSON files.
+- **SSE Hub Backpressure & Resource Protection** (#186):
+  - Implemented backpressure buffer checks in `safeWrite`, immediately dropping backpressured subscribers when buffer cap is exceeded while preserving healthy subscribers.
+- **Client Timeout Stream Wrapping** (#198):
+  - Wrapped response body methods (`json`, `text`, `blob`, `arrayBuffer`) in `clientFetch` so `AbortController` timeout remains active until the body settles.
+- **Synthesis Cache Race Elimination** (#202):
+  - Added generation tracking and in-flight write synchronization to `lib/cache.js`, preventing `ENOTEMPTY` errors during cache clearing.
+- **Documentation & Packaging Hygiene** (#181, #183, #184):
+  - Aligned `README.zh.md` architecture and tables to correctly classify Edge TTS as cloud-free online and Piper/eSpeak as local/offline.
+  - Removed `AGENTS.md` and `index.md` from `.gitignore` while ensuring strict exclusion from published npm packages.
+  - Added comprehensive test suites verifying synthesis deduplication, player SSE contracts, and cache clear atomicity.
+
+## 0.4.30
+
+### Fixed
+- **Supply Chain Security & Updater** (#196, #199):
+  - Removed `--config.minimumReleaseAge=0` bypass in `lib/updater.js:installExact`, respecting pnpm supply-chain quarantine during updates.
+  - Consolidated updater endpoint to canonical `/api/dsh-tts/update`, removing legacy `/dsh-tts/updater` route alias.
+  - Implemented shared `updaterMutex` returning HTTP 409 `Install already in progress` across concurrent requests.
+- **Theme Tokens & Design System** (#197):
+  - Replaced legacy CSS custom properties with canonical DSH core theme tokens (`--dsw-state-warn-primary`, `--dsw-brand-primary`, `--dsw-bg-layer-3`).
+- **Client Networking & Timeout Safety** (#198):
+  - Wrapped all client `fetch` calls in `clientFetch(url, options)` utility with configurable 15-second `AbortController` timeout.
+  - Added error rejection handlers on fire-and-forget telemetry, settings, and player requests.
+
+## 0.4.29
+
+### Fixed
+- **Settings & Revision Management** (#151, #152):
+  - Added robust `extractRevision` supporting nested Schemastery namespaces and entries array.
+  - Return revision in `GET /dsh-tts/config` and send it in `PUT /dsh-tts/config`.
+  - Eliminated stale `savedConfig` caching in `live()`, enabling direct live Schemastery volatile box evaluation.
+- **Audio Pipeline, Tool Schema & Dedup** (#156, #157, #166, #173, #175, #190):
+  - Enforced speech preparation, maxChars, and summarizeReply before sentence splitting in `speakAsItGoes`.
+  - Added `id: { type: 'string' }` to `speak_text` tool output schema under `additionalProperties: false` preventing core ToolOutputError.
+  - Included credential slot reference in cache and flight fingerprints avoiding cross-credential collisions.
+  - In-memory index for synthesis cache avoiding O(N) fs scans.
+- **Stream Hub & Web Player** (#158, #159, #160, #161, #174, #176, #186):
+  - `skipCurrent()` now cancels active browser SpeechSynthesis and clears busy state.
+  - `playAudio` resolves promise on NotAllowedError and detaches gesture listeners cleanly.
+  - Disconnect slow SSE subscribers exceeding backpressure buffer threshold.
+  - Registered updater routes inside ctx.effect with clean disposers.
+- **Providers & Local Engines** (#165, #167, #168, #169, #170, #171, #172, #177, #178, #179, #180):
+  - Nested integrations parser in UI and gated /speak on disabled channels.
+  - Canonical EN defaults for Edge and eSpeak.
+  - 100% key parity for EN/ZH model hints.
+  - Google TTS validates MIME and wraps raw PCM in valid WAV container.
+  - Azure SSML includes required xmlns/mstts attributes.
+  - Robust model download locking, cancellation awaiting writer cleanup, and HTML error page rejection.
+- **Release Hygiene & Sanitization** (#183, #184, #185):
+  - Removed outdated marketing claims from READMEs.
+  - Restored internal DEV docs while verifying exclusion from npm pack and GitHub mirror.
+  - Cleaned up publish-github script to handle negation patterns.
+
+## 0.4.28
+
+### Fixed
+- **Settings Contracts & Schemastery Validation** (#151, #152, #153, #155, #187, #188, #189):
+  - Made all 9 previously static fields volatile and ensured living Volatile boxes are unwrapped dynamically in live() without stale snapshots.
+  - Constrained maxQueue with .step(1).min(0) to reject non-integer and negative queue limits.
+  - Added optimistic revision validation and rollback on conflict (HTTP 409) in settings saving.
+  - Enforced isTrustedSettingsRequest auth guards on GET /dsh-tts/config and GET /dsh-tts/status.
+  - Enforced contiguous sequence ordering in SSE synthesis chunks.
+
+- **Audio Pipeline, Cache & Concurrency** (#154, #156, #157, #166, #173, #174, #175, #186, #190):
+  - Sanitized and normalized text once in prepareSpeechText() before character limits or summary generation, eliminating double-clean pronunciation distortions.
+  - Fixed subagent voice override gating with autoDetectSubagent !== false.
+  - Extended cache and dedup fingerprints with endpoint, models, voices, role, and language.
+  - Added admission concurrency throttle and semaphore for maxQueue synthesis reservations.
+  - Implemented SSE subscriber backpressure tracking and dropped slow lagging subscribers (>512 KB buffer) with drain handling.
+  - Switched cache index to an in-memory Map to eliminate disk scans on eviction.
+  - Ensured speak_text tool returns metadata and delivers audio to pending queue/SSE without dumping base64 into LLM context.
+
+- **Client Player & UI Parity** (#158, #159, #160, #161, #162, #163, #164, #165, #167, #168, #169, #176):
+  - Unified EventSource listener connection in client, preventing duplicate audio channels.
+  - Ensured skipCurrent() halts active playback immediately, and preview/replay route through the unified player.
+  - Gracefully handled browser autoplay restrictions (NotAllowedError), pausing the queue until user interaction.
+  - Kept compact recent/favorites history control visible in idle state.
+  - Registered updater routes inside ctx.effect() to properly unbind on plugin disposal.
+  - Enabled all 16 active providers in client UI, with secure key management and read-only indicators when settings scope is missing.
+  - Fixed sibling integration detection using Cordis services without relying on obsolete hasRoute.
+  - Re-anchored canonical defaults to English (en, en-US-AriaNeural) and achieved 100% parity between EN and ZH dictionaries.
+
+- **Model Weights Manager & System Hygiene** (#177, #178, #179, #180, #181, #182, #183, #184, #185):
+  - Stream chunk downloads now properly manage EventEmitter listeners without leaking error or drain handlers.
+  - Added synchronous concurrency lock per engine to share in-flight downloads and used unique nonce temporary file paths.
+  - Added minimum file size validation (minBytes / 1024 bytes) to reject truncated or error HTML downloads.
+  - Validated engine parameter in /dsh-tts/models/install and /dsh-tts/models/delete, returning HTTP 400 for unknown engines.
+  - Replaced tautological regex and source inspection tests with true runtime behavior tests.
+  - Isolated cache tests in temporary directories with automated cleanup.
+  - Synchronized README documentation with reality and strictly excluded internal dev docs (AGENTS.md, index.md, plans) from package distributions.
+  - Closes #151, #152, #153, #154, #155, #156, #157, #158, #159, #160, #161, #162, #163, #164, #165, #166, #167, #168, #169, #170, #171, #172, #173, #174, #175, #176, #177, #178, #179, #180, #181, #182, #183, #184, #185, #186, #187, #188, #189, #190, #191.
+
+## 0.4.27
+
+### Fixed
+- **Cloud Timeout Cancellation Forwarding** (#145): Fixed unquoted `abort` identifier in `lib/providers.js:21` inside `withCloudTimeout()`. Passing an active `AbortSignal` in `synthesize()` now cleanly attaches cancellation listeners without throwing `ReferenceError`.
+- **Settings Save Handler Runtime Crash** (#146): Added a defensive `settingsApi` adapter to `lib/index.js` and bound `getSettingsApi()` in `apply()`. `PUT /dsh-tts/config` now updates live configuration and persists changes without `ReferenceError: settingsApi is not defined`.
+- **Client Bundle Parity Verification** (#147): Added non-destructive `--check` mode to `scripts/build-client.mjs`, registered `check:client` npm script, and added automated test in `test/client-redesign.test.mjs` to prevent bundle drift.
+
+## 0.4.24
+
+### Fixed
+- **Peer gate on DSH 0.2.0-rc.1** (#58): DSH skips a profile bundle whose `peerDependencies` exclude the running version, so this plugin was absent from the profile with no error in the UI. Every `@deepseek-ai/dsh-*` peer now names both the 0.1.7-rc.2 and 0.2.0-rc.1 lines, because semver does not admit a prerelease of the next minor into a range that does not name it.
+
+Notable changes to `@goodandready/dsh-tts`.
+
+## 0.4.23
+
+### Security
+- **Strict Settings Request Trust Policy**: Eliminated `same-site` and arbitrary auth header bypasses in `isTrustedSettingsRequest`. Rejects non-same-origin callers, validates matching origin/host pair with loopback remote address, and requires explicit token verification against `DSH_AUTH_TOKEN`/`DSH_TOKEN` (#119).
+- **Protected Model Status & Path Redaction**: `GET /dsh-tts/models/status` now requires `isTrustedSettingsRequest` authorization (returns 403 for untrusted/cross-site requests) and completely redacts absolute filesystem paths from model state descriptors (#139).
+
+### Added
+- **One-Click Updater in Settings Card**: Integrated a unified live updater block (`PluginUpdaterBlock`) into the settings card, displaying current version, latest npm release badge, update execution button, and DSH restart instructions connected to `/dsh-tts/updater` and `/api/dsh-tts/update` (#120).
+- **Durable Model Download Failure Tracking**: `modelManager` now tracks sanitized download failure states across engines, reports errors through protected status (`failed: true`, `error: sanitizedMessage`), and clears errors on retry or deletion (#141).
+
+### Packaging
+- **Clean Runtime-Only Package Boundary**: Updated `package.json` files allowlist to exclude `scripts/` (build/release tooling) and `lib/client-src/` from published npm archive, preserving strict runtime-only surface (#140).
+
+## 0.4.22
+
+### Fixed
+- Enforce fail-closed `isTrustedSettingsRequest(req)` validation on `/stream`, `/pending`, and `/speak` HTTP handlers to reject untrusted cross-site requests with 403 Forbidden (#136).
+
+## 0.4.21
+
+### Fixed
+- Settings no longer wait on the removed settingsScope service. The client uses configForms (#137).
+
+## 0.4.19
+
+### Fixed
+- **Integration and cache stats reads require a trusted settings request.** `GET /dsh-tts/integrations` and `GET /dsh-tts/stats` now return 403 for a cross-site caller, the same rule as the other settings routes.
+- **Removed the unused Kokoro WAV encoder.** Local Kokoro inference is not bundled, and nothing called `pcmFloat32ToWav`.
+
+
+### Fixed
+- **Settings reachable again on the plugin's own page**: the current DSH core
+  (0.1.6-alpha.2) renders a plugin's configuration page only for entries registered
+  in the plugin-list seat `plugins.item`. `TtsRowConfig` is now registered there too
+  (`id: 'dsh-tts'`, order 60, static label); the row seat and the legacy
+  `settings.plugin.item` card stay as fallbacks. Sources edited in `lib/client-src`,
+  `lib/client.js` rebuilt.
+
+## 0.4.17
+
+### Added
+
+- Settings now register into the Plugins page's row seat, `plugins.row.config`,
+  keyed `@goodandready/dsh-tts#dsh-tts` (row id as `cordis.patch.yml` declares
+  it): the plugin's row on the Plugins page gains a configure control whose page
+  is the same settings form (`view: 'page'`), with a one-line state under the row
+  title (`view: 'summary'`). The previous seat, `settings.plugin.item`, stays as
+  a fallback for older cores, so settings never become unreachable (#127).
+
+### Fixed
+
+- The row-seat page renders the settings form **bare**: the host page already
+  draws the title, icon and crumb and provides the content padding, so our own
+  card chrome would double the border and shift the form out of the content area.
+
+### Tests
+
+- `test/row-config-seat.test.mjs` guards the row-seat key, the row id against
+  `cordis.patch.yml`, the fallback seats, and the bare view-aware rendering.

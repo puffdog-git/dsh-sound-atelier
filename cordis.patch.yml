@@ -1,0 +1,8 @@
+# DSH-sound-atelier (DSH 聲音工坊) bundle layer. Before the rename the package was @goodandready/dsh-tts and the row id was dsh-tts.
+#
+# `name` must stay the full npm package name: the client-modules registry
+# resolves the browser bundle by the loader entry name.
+- insert:
+    - id: dsh-sound-atelier
+      name: 'dsh-sound-atelier'
+      config: {}
