@@ -243,3 +243,11 @@ select.dts-input{cursor:pointer;color-scheme:inherit}
 .dts-link-row:last-of-type{border-bottom:0}
 .dts-link-label{font-size:13px;min-width:120px}
 .dts-link-row .dts-badge{white-space:normal;text-align:right;max-width:100%}
+
+/* 本機 Xinference：開啟介面與登入資訊 */
+.dts-access { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.dts-access a.dts-btn { text-decoration: none; display: inline-flex; align-items: center; }
+.dts-access-box { border: 1px solid var(--dsw-alias-border-l2, #8887); border-radius: 10px; padding: 12px; margin: 8px 0; display: grid; gap: 8px; }
+.dts-access-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dts-access-row > span { flex: 0 0 6.5em; opacity: 0.75; }
+.dts-access-row > code { flex: 1 1 12em; min-width: 0; overflow-wrap: anywhere; user-select: all; padding: 4px 8px; border-radius: 6px; background: color-mix(in srgb, currentColor 8%, transparent); }

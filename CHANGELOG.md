@@ -1,3 +1,10 @@
+# 1.0.3 — 2026-11-15
+
+- Local Xinference: starting the service now shows a status line, a running timer while it starts (it takes 30–60 seconds) and a plain-language result. The misleading "check the account settings" message for the normal auth-protected state is gone, and the start/stop buttons are disabled when they would do nothing.
+- The model to load is now picked from a dropdown of the speech-synthesis models your Xinference offers (new `available` operation), grouped by whether the plugin has a dedicated adapter, with the load id generated from the model name.
+- New buttons next to the local service: open Xinference's own web interface, and show the login details (admin account, password and API key) that the plugin created for it at install time. Details are fetched only on click, hidden again after two minutes and never logged.
+- "Unload" is no longer worded as "uninstall": it only frees memory and keeps the downloaded model files.
+
 # 1.0.2 — 2026-11-15
 
 - Voice delivery for messaging plugins is now built in (previously the separate `dsh-speech-bridge` plugin, same maintainer): the `send_speech_reply` tool for OneBot, QQBot and dsh-im conversations, the "語音交付" settings page with channel capabilities and recent results, and the optional `external:dsh-voice` speech-to-text source. Nothing extra to install.
