@@ -64,3 +64,17 @@ test('介面：模型用下拉選單挑、代號自動產生、啟動與停止�
   assert.ok(!source.includes('解除安裝'), '「卸下模型」不再寫成「解除安裝」')
   assert.ok(!source.includes('模型登入名稱'))
 })
+
+test('GPT-SoVITS：有安裝與連線引導、語言用下拉選單、連線檢查只接受本機網址', () => {
+  const ui = fs.readFileSync(new URL('../lib/client-src/25-local-engines.js', import.meta.url), 'utf8')
+  assert.match(ui, /data-gsv-guide/)
+  assert.match(ui, /api_v2\.py -a 127\.0\.0\.1 -p 9880 -c GPT_SoVITS\/configs\/tts_infer\.yaml/)
+  assert.match(ui, /https:\/\/github\.com\/RVC-Boss\/GPT-SoVITS/)
+  assert.match(ui, /GSV_TEXT_LANGUAGES/)
+  assert.ok(!ui.includes("input('localTtsPromptLanguage'"), '語言不再讓使用者自己打代號')
+  const routes = fs.readFileSync(new URL('../lib/routes.js', import.meta.url), 'utf8')
+  const probe = routes.slice(routes.indexOf("body.action==='probe'"), routes.indexOf("body.action==='start-service'"))
+  assert.match(probe, /localRoot\(cfg\)/, '網址經過本機位址檢查')
+  assert.match(probe, /AbortSignal\.timeout\(4000\)/)
+  assert.match(routes, /import \{ localServiceOperation, localRoot \}/)
+})

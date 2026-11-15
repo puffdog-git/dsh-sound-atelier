@@ -280,3 +280,9 @@ select.dts-input{cursor:pointer;color-scheme:inherit}
 .dts-block select, .dts-block input[type="file"], .dts-block pre { max-width: 100%; box-sizing: border-box; }
 .dts-block label { max-width: 100%; }
 .dts-block .dts-btn { max-width: 100%; white-space: normal; }
+
+/* 自己安裝的服務（GPT-SoVITS）的引導 */
+.dts-guide { border: 1px solid var(--dsw-alias-border-l2, #8887); border-radius: 12px; padding: 12px; margin: 8px 0; display: grid; gap: 6px; }
+.dts-guide-code { display: block; margin: 6px 0; padding: 6px 8px; border-radius: 6px; overflow-wrap: anywhere; user-select: all; background: color-mix(in srgb, currentColor 8%, transparent); }
+.dts-guide-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+.dts-guide .dts-link { display: inline-block; margin-left: 6px; }
