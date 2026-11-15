@@ -1,5 +1,6 @@
 # 1.0.3 — 2026-11-15
 
+- New "本機模型快速上手" guide at the top of the local-model section: four numbered steps (install the environment, start the service and create its local account, pick and load a model, preview and set it as the voice source), one action at a time, with progress for long-running work and plain-language errors. The detailed controls stay below as the advanced section.
 - Local Xinference: starting the service now shows a status line, a running timer while it starts (it takes 30–60 seconds) and a plain-language result. The misleading "check the account settings" message for the normal auth-protected state is gone, and the start/stop buttons are disabled when they would do nothing.
 - The model to load is now picked from a dropdown of the speech-synthesis models your Xinference offers (new `available` operation), grouped by whether the plugin has a dedicated adapter, with the load id generated from the model name.
 - New buttons next to the local service: open Xinference's own web interface, and show the login details (admin account, password and API key) that the plugin created for it at install time. Details are fetched only on click, hidden again after two minutes and never logged.

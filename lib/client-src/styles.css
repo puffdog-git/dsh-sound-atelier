@@ -251,3 +251,24 @@ select.dts-input{cursor:pointer;color-scheme:inherit}
 .dts-access-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .dts-access-row > span { flex: 0 0 6.5em; opacity: 0.75; }
 .dts-access-row > code { flex: 1 1 12em; min-width: 0; overflow-wrap: anywhere; user-select: all; padding: 4px 8px; border-radius: 6px; background: color-mix(in srgb, currentColor 8%, transparent); }
+
+/* 本機模型快速上手 */
+.dts-quick { border: 1px solid var(--dsw-alias-border-l2, #8887); border-radius: 14px; padding: 16px; margin: 10px 0 18px; display: grid; gap: 10px; }
+.dts-quick-title { font-size: 16px; }
+.dts-quick-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.dts-quick-step { border: 1px solid var(--dsw-alias-border-l2, #8885); border-radius: 12px; padding: 12px; display: grid; gap: 8px; }
+.dts-quick-step[data-state="todo"] { opacity: 0.6; }
+.dts-quick-step[data-state="current"] { border-color: var(--dsw-alias-brand-primary, #4d6bfe); }
+.dts-quick-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dts-quick-number { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 1px solid currentColor; }
+.dts-quick-step[data-state="done"] .dts-quick-number { background: #2e9e6a; border-color: #2e9e6a; color: #fff; }
+.dts-quick-step[data-state="current"] .dts-quick-number { background: var(--dsw-alias-brand-primary, #4d6bfe); border-color: var(--dsw-alias-brand-primary, #4d6bfe); color: #fff; }
+.dts-quick-status { margin-left: auto; font-size: 12px; opacity: 0.8; overflow-wrap: anywhere; }
+.dts-quick-body { display: grid; gap: 8px; justify-items: start; }
+.dts-quick-body > .dts-field, .dts-quick-body > div { width: 100%; }
+.dts-quick-inline { display: inline-flex; align-items: center; gap: 8px; flex-direction: row-reverse; justify-content: flex-end; }
+.dts-quick-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.dts-quick-primary { font-weight: 700; border-color: var(--dsw-alias-brand-primary, #4d6bfe); }
+.dts-quick-progress, .dts-quick-note, .dts-quick-error { border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px; justify-items: start; background: color-mix(in srgb, currentColor 6%, transparent); }
+.dts-quick-error { color: #c0453f; }
+.dts-quick-log { font-family: ui-monospace, monospace; font-size: 12px; opacity: 0.75; overflow-wrap: anywhere; }
