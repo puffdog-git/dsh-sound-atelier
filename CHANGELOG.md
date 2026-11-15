@@ -1,3 +1,7 @@
+# 1.0.5 — 2026-11-15
+
+- The local-model section now starts by asking which kind of local speech you want (Xinference, GPT-SoVITS, dots.tts direct, IndexTTS direct) and shows the matching guide right below it. The GPT-SoVITS setup guide used to appear only after changing a setting further down the page, so it was easy to miss.
+
 # 1.0.4 — 2026-11-15
 
 - One-click engine installs no longer require uv to be installed first: when it is missing, the official uv binary is downloaded from astral-sh/uv, verified against the release SHA-256 and kept in the plugin's own folder.

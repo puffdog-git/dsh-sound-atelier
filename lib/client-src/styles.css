@@ -291,3 +291,13 @@ select.dts-input{cursor:pointer;color-scheme:inherit}
 .dts-native-prepare { border: 1px solid var(--dsw-alias-border-l2, #8887); border-radius: 12px; padding: 12px; margin: 8px 0; display: grid; gap: 8px; }
 .dts-native-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .dts-native-row > span:first-child { flex: 0 0 7em; font-weight: 600; }
+
+/* 選擇本機語音種類 */
+.dts-kind { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 10px 0 14px; }
+.dts-kind-options { min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 8px; }
+.dts-kind-option { text-align: left; display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--dsw-alias-border-l2, #8887); background: transparent; color: inherit; font: inherit; cursor: pointer; white-space: normal; }
+.dts-kind-option > span { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+.dts-kind-option { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.dts-kind-option > * { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.dts-kind-option[aria-checked="true"] { border-color: var(--dsw-alias-brand-primary, #4d6bfe); box-shadow: inset 0 0 0 1px var(--dsw-alias-brand-primary, #4d6bfe); }
+.dts-kind-option:disabled { cursor: default; opacity: 0.6; }

@@ -78,3 +78,16 @@ test('GPT-SoVITS：有安裝與連線引導、語言用下拉選單、連線檢�
   assert.match(probe, /AbortSignal\.timeout\(4000\)/)
   assert.match(routes, /import \{ localServiceOperation, localRoot \}/)
 })
+
+test('本機區塊最上面先選種類，對應的引導顯示在最上面', () => {
+  const ui = fs.readFileSync(new URL('../lib/client-src/25-local-engines.js', import.meta.url), 'utf8')
+  const chooser = ui.indexOf("'data-local-kind'")
+  const quick = ui.indexOf('h(LocalQuickStart,')
+  const guide = ui.indexOf("'data-gsv-guide'")
+  const advanced = ui.indexOf("'data-local-advanced-heading'")
+  assert.ok(chooser > 0 && chooser < quick && quick < guide && guide < advanced, '順序：選種類 → 快速上手／GPT-SoVITS 引導 → 進階')
+  assert.equal(ui.split("'data-gsv-guide'").length, 2, 'GPT-SoVITS 引導只有一份')
+  for (const kind of ['xinference', 'gpt-sovits', 'dots-native', 'index-native']) assert.ok(ui.includes("['" + kind + "', '"), kind)
+  assert.match(ui, /data-kind-unsaved/)
+  assert.match(ui, /data-native-jump/)
+})
