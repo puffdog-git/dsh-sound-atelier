@@ -1,3 +1,10 @@
+# 1.0.6 — 2026-11-17
+
+Two small fixes taken from upstream dsh-tts 0.4.43 (its 0.4.44 is an internal refactor and is not merged).
+
+- When a reply cannot be prepared for speech (for example the Japanese dubbing translation fails), the reason is now written to the log. It used to be skipped without a trace. The reply is still not spoken in that case, and a cancelled or interrupted turn stays quiet as before.
+- The read-along highlight and the separator in the message menu use current DSH theme colours instead of two retired names that always fell back to a fixed grey.
+
 # 1.0.5 — 2026-11-15
 
 - The local-model section now starts by asking which kind of local speech you want (Xinference, GPT-SoVITS, dots.tts direct, IndexTTS direct) and shows the matching guide right below it. The GPT-SoVITS setup guide used to appear only after changing a setting further down the page, so it was easy to miss.
